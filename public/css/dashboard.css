@@ -1,0 +1,287 @@
+/* Archivo Regular*/
+@font-face {
+  font-family: 'archivo';
+  src: url('../assets/fonts/Archivo-Regular.ttf')format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+/*Archivo SemiBold*/
+@font-face {
+  font-family: 'archivo semibold';
+  src: url('../assets/fonts/Archivo-SemiBold.ttf')format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+/*Archivo Bold*/
+@font-face {
+  font-family: 'archivo bold';
+  src: url('../assets/fonts/Archivo-Bold.ttf')format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+/*Roboto Light*/
+@font-face {
+  font-family: 'roboto light';
+  src: url('../assets/fonts/Roboto-Light.ttf')format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+/*Roboto Regular*/
+@font-face {
+  font-family: 'roboto';
+  src: url('../assets/fonts/Roboto-Regular.ttf')format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+/*Roboto Medium*/
+@font-face {
+  font-family: 'roboto medium';
+  src: url('../assets/fonts/Roboto-Medium.ttf')format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+/*Roboto Bold*/
+@font-face {
+  font-family: 'roboto bold';
+  src: url('../assets/fonts/Roboto-Bold.ttf')format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* Styles for .content */
+
+
+@media (max-width: 768px) {
+  .content {
+    margin-left: 0;
+  }
+}
+
+/* Styles for .header */
+.header {
+  padding: 10px;
+}
+
+.header .logo-text {
+  font-size: 20px;
+  font-family: 'archivo semibold', sans-serif;
+}
+
+.header .app-name {
+  font-size: 20px;
+  font-family: 'archivo semibold', sans-serif;
+}
+
+.header img {
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+/*Dashboard*/
+.dashboard-text {
+  margin-left: 20px;
+  margin-bottom: 13px;
+}
+
+.dashboard-text span {
+  font-family: 'archivo bold', sans-serif;
+  font-size: 30px;
+
+}
+
+
+
+
+.hr-long {
+  height: 2px;
+  background-color: #fff;
+  border: none;
+}
+
+/*Monitoring section*/
+.section-row {
+  margin-bottom: 5px;
+}
+
+.section-row  span {
+  font-size: 27px;
+  padding-right: 60px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+#chart-title{
+  font-size: 36px;
+  font-family: 'roboto bold', sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.chart-container {
+  position: relative;
+  margin-left:50px;
+  width: 90%;
+  height: 400px; /* Initial height for the chart */
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+    height: 300px; /* Adjust height for smaller screens */
+  }
+}
+
+/*Alerts section*/
+.alert-container {
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  padding: 10px;
+  cursor: pointer;
+  width: 170px;  /* Adjust width as needed */
+  height: 50px;  /* Adjust height as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;  /* Hide overflowing content */
+  position: relative;
+  margin-right: 10px;  /* Adjust spacing between containers */
+}
+
+.alert-header {
+  font-family: 'roboto', sans-serif;  /* Change to desired font */
+  font-size: 24px;
+  padding: 10px;
+  border-radius: 25px;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;  /* Hide overflowing content */
+  white-space: nowrap;  /* Prevent text from wrapping */
+  position: relative;
+}
+
+.alert-content {
+  margin-top: 20px;
+}
+
+.alert-count {
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+#warning-count{
+  background-color: #FFC700; /* Set background color to red */
+  padding: 3px 3px; /* Add padding to the count */
+  border-radius: 50px; /* Create a rounded background */
+}
+
+#critical-count{
+  background-color: #FF0000; /* Set background color to red */
+  padding: 3px 3px; /* Add padding to the count */
+  border-radius: 50px; /* Create a rounded background */
+}
+
+.alert-list{
+  font-size: 2rem;
+}
+
+#warning-list::marker{
+  color: #FFC700;
+}
+
+#critical-list::marker{
+  color: #FF0000;
+}
+
+.warning-text{
+  font-family: 'roboto medium', sans-serif;
+  font-size: 24px;
+  color: #FFC700;
+}
+
+.alert-time{
+  font-family: 'roboto light', sans-serif;
+  font-size: 20px;
+}
+
+.alert-date{
+  font-family: 'roboto light', sans-serif;
+  font-size: 20px;
+}
+
+.alert-measurement{
+  font-family: 'roboto medium', sans-serif;
+  font-size: 24px;
+}
+
+.alert-information{
+  font-family: 'roboto medium', sans-serif;
+  font-size: 24px;
+}
+
+.critical-text{
+  font-family: 'roboto medium', sans-serif;
+  font-size: 24px;
+  color: #FF0000;
+}
+
+#btn-send-alert{
+  font-size: 24px;
+}
+
+/*History data*/
+.history-months{
+  border: 1px solid #ddd;
+  cursor: pointer;
+  height: 50px; /* Adjust height as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  padding: 10px;
+}
+
+.history-data-content {
+  margin-top: 20px;
+}
+
+.history-data-list{
+  font-size: 2rem;
+}
+
+.report-history{
+  font-family: 'roboto medium', sans-serif;
+  font-size: 24px;
+}
+
+.history-data-time{
+  font-family: 'roboto light', sans-serif;
+  font-size: 20px;
+}
+
+.history-data-date{
+  font-family: 'roboto light', sans-serif;
+  font-size: 20px;
+}
+
+.history-data-measurement{
+  font-family: 'roboto medium', sans-serif;
+  font-size: 24px;
+}

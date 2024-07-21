@@ -1,0 +1,21 @@
+        .nav-collapsed {
+            width: 64px; /* Width to show only icons */
+        }
+        .nav-expanded {
+            width: 250px; /* Width to show icons and text */
+        }
+        .main-collapsed {
+            margin-left: 64px; /* Adjust according to collapsed nav bar width */
+        }
+        .main-expanded {
+            margin-left: 250px; /* Adjust according to expanded nav bar width */
+        }
+        .text-hidden {
+            display: none;
+        }
+        .text-visible {
+            display: inline-block;
+        }
+        #nav-bar, #main-content, .ml-2 {
+            transition: all 0.3s ease;
+        }
