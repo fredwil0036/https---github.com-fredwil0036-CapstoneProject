@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\StaffManagementController;
 use App\Http\Controllers\Admin\ReportsController;
 use App\Http\Controllers\SMSController;
 use App\Http\Controllers\Staff\StaffDashboardController;
+use App\Http\Controllers\Staff\AddCasualtiesController;
 use App\Http\Controllers\Admin\ResidentManagementController;
 use App\Services\SmsService;
 use Illuminate\Support\Facades\Log;
@@ -23,51 +24,9 @@ use Illuminate\Support\Facades\Log;
 //     return Redirect::to('/login');
 // })->middleware('redirect.if.auth');
 Route::get("/", function () {
-    return view("welcome");
+    return view("cloning.fetchdatainfirebase");
 });
-Route::get('/test-sms', function (SmsService $philsimService) {
-  $recipient = '639356749788'; // Replace with your phone number for testing
-  $message = 'This is a test message';
-
-  // Send the SMS
-  $response = $philsimService->sendSms($recipient, $message);
-
-  // Check if the response contains an error
-  if (isset($response['status']) && $response['status'] === 'error') {
-      $errorMessage = $response['message'] ?? 'Unknown error occurred.';
-      
-      // Handle specific cases based on the error message
-      if (strpos($errorMessage, 'exceeded your sending limit') !== false) {
-          $httpStatus = 429; // Too Many Requests
-          $userMessage = 'You have exceeded your sending limit. Please check your account limits.';
-      } else {
-          $httpStatus = 400; // Bad Request
-          $userMessage = 'Failed to send SMS. Check the logs for details.';
-      }
-
-      Log::error('Failed to send SMS: ' . $errorMessage);
-      return response()->json([
-          'status' => 'error',
-          'message' => $userMessage,
-          'details' => $response,
-      ], $httpStatus);
-  } else {
-      Log::info('SMS sent successfully: ' . json_encode($response));
-      return response()->json([
-          'status' => 'success',
-          'message' => 'SMS sent successfully!',
-          'details' => $response,
-      ], 200);
-  }
-});
-
-Route::post('/send-sms', [SmsController::class, 'sendBulkSms'])->name('sendsms');
 Route::get('/water-levels', [FirestoreController::class, 'getWaterLevels']);
-
-Route::get('/contacts', [ResidentManagementController::class, 'index'])->name('contacts.index');
-Route::post('/contacts', [ResidentManagementController::class, 'store'])->name('contacts.store');
-
-
 require __DIR__.'/auth.php';
 
 Route::group(['middleware' => 'admin'], function (){
@@ -80,13 +39,16 @@ Route::group(['middleware' => 'admin'], function (){
     Route::get('/admin/reports', [ReportsController::class, 'index'])->name('admin.reports');
     Route::get('/admin/weatherforecast', [WeatherController::class, 'show'])->name('admin.weatherforecast');
     Route::get('/admin/activitylogs', [ActivitylogsController::class,'index'])->name('admin.act');
-    Route::post('/send-sms', [SMSController::class, 'sendsms'])->name('send-sms');
+    Route::post('/admin/send-sms', [SMSController::class, 'sendsms'])->name('send-sms');
+    Route::get('/admin/residentmanagement', [ResidentManagementController::class, 'index'])->name('contacts.index');
+Route::post('/admin/residentmanagement', [ResidentManagementController::class, 'store'])->name('contacts.store');
 
 });
 
 Route::group(['middleware' => 'user'], function () {
   Route::get('/staff/dashboard', [StaffDashboardController::class,'index'])->name('WLa');
   Route::get('/staff/weatherforecast', [StaffweathershowController::class, 'show'])->name('staff.weatherforecast');
+  Route::get('/staff/addcasualties', [AddCasualtiesController::class, 'index'])->name('staff.addCasualties');
 });
 
 

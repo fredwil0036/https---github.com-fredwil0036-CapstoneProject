@@ -19,8 +19,8 @@
                     <span class="ml-2 text-hidden">Staff Management</span>
                 </a>
             </li>
-            <li class="p-4 hover:bg-gray-700 {{ request()->routeIs('admin.act') ? 'bg-red-400' : '' }}">
-                <a href="{{route('admin.act')}}" class="flex items-center">
+            <li class="p-4 hover:bg-gray-700 {{ request()->routeIs('contacts.index') ? 'bg-red-400' : '' }}">
+                <a href="{{route('contacts.index')}}" class="flex items-center">
                     <span class="material-icons">groups</span>
                     <span class="ml-2 text-hidden">Resident Management</span>
                 </a>

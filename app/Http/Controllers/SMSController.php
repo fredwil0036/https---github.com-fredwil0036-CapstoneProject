@@ -17,15 +17,24 @@ class SMSController extends Controller
     }
     public function sendSms(Request $request)
     {
-        $barangays = $request->input('barangays');
-        $message = $request->input('message');
-        $contacts = Contact::whereIn('barangay', $barangays)->get();
+        $request->validate([
+            'message' => 'required|string',
+            'barangays' => 'required|array',
+        ]);
 
+        $contacts = Contact::whereIn('barangay', $request->barangays)->get();
+        $message = $request->message;
+
+      
         foreach ($contacts as $contact) {
-            $this->smsService->sendSms($contact->phone_number, $message);
+            $response = $this->smsService->sendSms($contact->phone_number, $message);
+            $results[] = [
+                'contact' => $contact->name,
+                'response' => $response,
+            ];
         }
 
-        return redirect()->back()->with('success', 'SMS sent successfully.');
+        return redirect()->route('admin.dashboard')->with('status', 'SMS sent successfully.');
     }
     
 }

@@ -21,8 +21,15 @@ class SmsService
         Log::info('PHILSIM API Key: ' . $this->apiKey);
     }
 
-    public function sendSms($recipient, $message, $senderId = 'YourName', $type = 'plain')
+    public function sendSms($recipient, $message, $senderId = 'PhilSMS', $type = 'plain')
     {
+         // Ensure the recipient number is in the correct format
+         if (substr($recipient, 0, 1) === '0') {
+            $recipient = '63' . substr($recipient, 1);
+        } elseif (substr($recipient, 0, 3) === '+63') {
+            $recipient = substr($recipient, 1);
+        }
+
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->apiKey,
             'Content-Type' => 'application/json',
@@ -36,10 +43,17 @@ class SmsService
 
         if ($response->failed()) {
             Log::error('HTTP Error: ' . $response->status() . ' - Response: ' . $response->body());
-        } else {
-            Log::info('SMS sent successfully: ' . $response->body());
+            return ['status' => 'error', 'message' => 'Failed to send SMS. Check the logs for details.'];
         }
 
-        return $response->json();
+        $responseBody = $response->json();
+
+        if (isset($responseBody['status']) && $responseBody['status'] === 'error') {
+            Log::error('SMS Error: ' . $responseBody['message']);
+            return ['status' => 'error', 'message' => $responseBody['message']];
+        }
+
+        Log::info('SMS sent successfully: ' . json_encode($responseBody));
+        return $responseBody;
     }
 }

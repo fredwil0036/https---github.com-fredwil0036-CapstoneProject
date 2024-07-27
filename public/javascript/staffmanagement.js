@@ -27,13 +27,20 @@ function previewImage(event) {
     const mainContent = document.getElementById('main-content');
 
     toggleButton.addEventListener('click', () => {
-        navBar.classList.toggle('hidden-nav');
-        navBar.classList.toggle('visible-nav');
+        navBar.classList.toggle('nav-collapsed');
+        navBar.classList.toggle('nav-expanded');
         mainContent.classList.toggle('main-collapsed');
         mainContent.classList.toggle('main-expanded');
-        const spans = document.querySelectorAll('#nav-bar span:nth-child(2)');
-        spans.forEach(span => span.classList.toggle('lg:hidden'));
+        const textLabels = document.querySelectorAll('#nav-bar .ml-2');
+        textLabels.forEach(label => label.classList.toggle('text-hidden'));
+        textLabels.forEach(label => label.classList.toggle('text-visible'));
     });
+
+    // Ensure nav bar is collapsed initially
+    document.addEventListener('DOMContentLoaded', () => {
+        navBar.classList.add('nav-collapsed');
+    });
+
 
 
    

@@ -6,22 +6,26 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        .hidden-nav {
-            width: 4rem; /* Width for icons only */
-            overflow: hidden;
-            transition: width 0.3s;
+          .nav-collapsed {
+            width: 64px; /* Width to show only icons */
         }
-        .visible-nav {
-            width: 16rem; /* 64 * 0.25rem (tailwind w-64) */
-            transition: width 0.3s;
-        }
-        .main-expanded {
-            margin-left: 16rem; /* Align with visible-nav width */
-            transition: margin-left 0.3s;
+        .nav-expanded {
+            width: 250px; /* Width to show icons and text */
         }
         .main-collapsed {
-            margin-left: 4rem; /* Align with hidden-nav width */
-            transition: margin-left 0.3s;
+            margin-left: 64px; /* Adjust according to collapsed nav bar width */
+        }
+        .main-expanded {
+            margin-left: 250px; /* Adjust according to expanded nav bar width */
+        }
+        .text-hidden {
+            display: none;
+        }
+        .text-visible {
+            display: inline-block;
+        }
+        #nav-bar, #main-content, .ml-2 {
+            transition: all 0.3s ease;
         }
     </style>
 </head>
@@ -30,7 +34,7 @@
     @include('Staff.staffmodal.leftnavigation')
 
     <!-- Main Content -->
-    <main id="main-content" class="flex-grow p-4 main-expanded">
+    <main id="main-content" class="flex-grow p-4 main-collapsed">
         <div class="w-full max-w-screen-full bg-white p-10 rounded-xl ring-8 ring-white ring-opacity-40">
             <div class="flex justify-between">
                 <div class="flex flex-col">
@@ -83,21 +87,25 @@
             @endforeach
         </div>
      
-   
     </main>
-
     <script>
-        const toggleButton = document.getElementById('toggle-nav');
+               const toggleButton = document.getElementById('toggle-nav');
         const navBar = document.getElementById('nav-bar');
         const mainContent = document.getElementById('main-content');
 
         toggleButton.addEventListener('click', () => {
-            navBar.classList.toggle('hidden-nav');
-            navBar.classList.toggle('visible-nav');
+            navBar.classList.toggle('nav-collapsed');
+            navBar.classList.toggle('nav-expanded');
             mainContent.classList.toggle('main-collapsed');
             mainContent.classList.toggle('main-expanded');
-            const spans = document.querySelectorAll('#nav-bar span:nth-child(2)');
-            spans.forEach(span => span.classList.toggle('lg:hidden'));
+            const textLabels = document.querySelectorAll('#nav-bar .ml-2');
+            textLabels.forEach(label => label.classList.toggle('text-hidden'));
+            textLabels.forEach(label => label.classList.toggle('text-visible'));
+        });
+
+        // Ensure nav bar is collapsed initially
+        document.addEventListener('DOMContentLoaded', () => {
+            navBar.classList.add('nav-collapsed');
         });
     </script>
 </body>

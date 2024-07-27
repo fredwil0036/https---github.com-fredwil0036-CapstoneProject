@@ -20,7 +20,7 @@
 @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-<main id="main-content" class="flex-grow p-4 main-collapsed">
+    <main id="main-content" class="flex-grow p-4 main-collapsed">
   <div class="content">
     <div class="header d-flex align-items-center mb-4">
       <!-- Left section with MDRRMO logo, text, App logo, and app name text -->
@@ -40,19 +40,20 @@
         <button onclick="showContent('monitorContent')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Monitor
         </button>
-        <button class="bg-blue-500 text-white px-4 py-2 rounded" type="button" data-bs-toggle="modal" data-bs-target="#smsModal">
-    Send SMS
-</button>
+        <button class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded" type="button" data-bs-toggle="modal" data-bs-target="#smsModal">
+        Send Sms Alert
+    </button>
       </div>
  
       
     </div>
 
-    <div id="monitorContent" class="content-section p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded ml-10">
+    <div id="monitorContent" class=" w-11/12 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded ml-10">
       <canvas id="monitorChart" class="w-full flex items-center justify-center"></canvas>
         </div>
   </div>
 </main>
+
 
 <script>
   // Your web app's Firebase configuration
@@ -115,9 +116,15 @@
               }]
           },
           options: {
+            responsive: true,
+           maintainAspectRatio: false,
               scales: {
                   y: {
-                      beginAtZero: true
+                      beginAtZero: true,
+                      title: {
+                      display: true,
+                       text: 'Meter'
+        },
                   }
               }
           }
@@ -147,7 +154,9 @@
           monitorChart.data.labels = labels;
           monitorChart.data.datasets[0].data = waterLevels;
           monitorChart.update();
+          
       });
+      
   }
 
      // Clear form fields and close modal on successful submission

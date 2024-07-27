@@ -12,30 +12,49 @@
   @Vite('resources/css/app.css')
 </head>
 <style>
-    .hidden-nav {
-      width: 4rem; /* Width for icons only */
-      overflow: hidden;
-      transition: width 0.3s;
-    }
-    .visible-nav {
-      width: 16rem; /* 64 * 0.25rem (tailwind w-64) */
-      transition: width 0.3s;
-    }
-    .main-expanded {
-            margin-left: 16rem; /* Align with visible-nav width */
-            transition: margin-left 0.3s;
+          .nav-collapsed {
+            width: 64px; /* Width to show only icons */
         }
-    .main-collapsed {
-            margin-left: 4rem; /* Align with hidden-nav width */
-            transition: margin-left 0.3s;
+        .nav-expanded {
+            width: 250px; /* Width to show icons and text */
         }
-</style>
+        .main-collapsed {
+            margin-left: 64px; /* Adjust according to collapsed nav bar width */
+        }
+        .main-expanded {
+            margin-left: 250px; /* Adjust according to expanded nav bar width */
+        }
+        .text-hidden {
+            display: none;
+        }
+        .text-visible {
+            display: inline-block;
+        }
+        #nav-bar, #main-content, .ml-2 {
+            transition: all 0.3s ease;
+        }
+        .profile-section {
+        text-align: center;
+        }
+        .profile-picture {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            margin: 0 auto;
+        }
+        .profile-info {
+            text-align: center;
+            margin-top: 8px;
+        }
+      
+    </style>
 <body class="flex font-poppins bg-bgblue ">
 
 @include('staff.staffmodal.leftnavigation')
 
 
-<main id="main-content" class="flex-grow p-4 main-expanded">
+<main id="main-content" class="flex-grow p-4 main-collapsed">
   <div class="content">
     <div class="header d-flex align-items-center mb-4">
       <!-- Left section with MDRRMO logo, text, App logo, and app name text -->
@@ -51,13 +70,41 @@
       <h1 class="text-white">Dashboard</h1>
     </div>
     
-    <div id="monitorContent" class="mt-3 content-section p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded ml-10">
+    <div id="monitorContent" class="w-11/12 mt-3 content-section p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded ml-10">
       <canvas id="monitorChart" class="w-full flex items-center justify-center"></canvas>
         </div>
   </div>
 </main>
 
 <script>
+
+const toggleButton = document.getElementById('toggle-nav');
+    const navBar = document.getElementById('nav-bar');
+    const mainContent = document.getElementById('main-content');
+
+    toggleButton.addEventListener('click', () => {
+        navBar.classList.toggle('nav-collapsed');
+        navBar.classList.toggle('nav-expanded');
+        mainContent.classList.toggle('main-collapsed');
+        mainContent.classList.toggle('main-expanded');
+        const textLabels = document.querySelectorAll('#nav-bar .ml-2');
+        textLabels.forEach(label => label.classList.toggle('text-hidden'));
+        textLabels.forEach(label => label.classList.toggle('text-visible'));
+        const profileInfo = document.querySelector('.profile-info');
+        const profilepic=document.querySelector('.profile-picture')
+        profileInfo.classList.toggle('text-hidden');
+        profileInfo.classList.toggle('text-visible');
+        profilepic.classList.toggle('hidden');
+        profilepic.classList.toggle('vissible');
+
+    });
+
+    // Ensure nav bar is collapsed initially
+    document.addEventListener('DOMContentLoaded', () => {
+        navBar.classList.add('nav-collapsed');
+    });
+
+
   // Your web app's Firebase configuration
   var firebaseConfig = {
             apiKey: "AIzaSyA4CAiWPYp-s5NDpyXjl8WvDHM4_mRCEH0",
@@ -74,25 +121,7 @@
 
   var db = firebase.firestore();
 
-  const toggleButton = document.getElementById('toggle-nav');
-  const navBar = document.getElementById('nav-bar');
-  const mainContent = document.getElementById('main-content');
-  const ProfileImage = document.getElementById('profileImage');
-  const dropdownreport=document.getElementById('report-dropdwon');
-
-    toggleButton.addEventListener('click', () => {
-    navBar.classList.toggle('visible-nav');
-    navBar.classList.toggle('hidden-nav');
-      
-      mainContent.classList.toggle('main-collapsed');
-      mainContent.classList.toggle('main-expanded');
-      ProfileImage.classList.toggle('hidden')
-      dropdownreport.classList,toggle('hidden');
-      const spans = document.querySelectorAll('#nav-bar span:nth-child(2)');
-      spans.forEach(span => span.classList.toggle('lg:hidden'));
-  });
-
-  document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', () => {
       renderChart();
   });
 

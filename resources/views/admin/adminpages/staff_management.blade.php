@@ -7,26 +7,9 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   @Vite('resources/css/app.css')
+  <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
 </head>
-<style>
-    .hidden-nav {
-            width: 4rem; /* Width for icons only */
-            overflow: hidden;
-            transition: width 0.3s;
-        }
-        .visible-nav {
-            width: 16rem; /* 64 * 0.25rem (tailwind w-64) */
-            transition: width 0.3s;
-        }
-        .main-expanded {
-            margin-left: 16rem; /* Align with visible-nav width */
-            transition: margin-left 0.3s;
-        }
-        .main-collapsed {
-            margin-left: 4rem; /* Align with hidden-nav width */
-            transition: margin-left 0.3s;
-        }
-  </style>
+
 <body class="flex font-poppins bg-bgblue ">
         <!-- modals -->
     @include('admin.adminmodal.leftnavigation')
@@ -35,7 +18,7 @@
     @include('admin.adminmodal.updateModal')
     @include('admin.adminmodal.deleteconfirmation')
 
-<main class="flex-grow p-4 main-expanded bg-bgblue" id="main-content">
+    <main id="main-content" class="flex-grow p-4 main-collapsed">
 
 @if (session('success'))
     <div class="bg-green-200 border-green-500 border-l-4 p-4 mb-4">
@@ -65,70 +48,62 @@
     <div class="container mx-auto mt-10 pl-64 flex justify-end">
     <button id="addButton" class="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded">Add Staff</button>
     </div>
-
-      <div class="flex items-center ml-10 mt-10">
-        <div class="overflow-x-auto w-full max-w-full rounded-md">
-        <table class="min-w-full bg-white  divide-y divide-black">
-       <thead>
-       
-         <tr class="bg-blue-800 text-white text-xl">
-          <th class="py-2 px-4 border-b border-r-1 border-gray-400">id</th>
-          <th class="py-2 px-4 border-b">Image</th>
-          <th class="py-2 px-4 border-b">Name</th>
-          <th class="py-2 px-4 border-b">Date Created</th>
-          <th class="py-2 px-4 border-b">Role</th>
-          <th class="py-2 px-4 border-b">Status</th>
-          <th class="py-2 px-4 border-b">Action</th>
-        </tr>
-       
-       </thead>
-       <tbody class="divide-y divide-black">
-       @foreach ($staffMembers as $staff)
-        <tr>
-          <!-- idnumber -->
-          <td class="py-2 px-4 border-b text-center">{{$staff->id}}</td>
-             <!-- image -->
-             <td class="py-2 px-4 border-b ">
-                <div class="flex justify-center items-center">
-                  <img src="{{ asset('profilepic/prof2.jpg') }}" alt="" style="height: 100px; width: auto;">
-                </div>
-                
-              </td>             <!-- Name -->
-            <td class="py-2 px-4 border-b text-center">{{$staff->last_name}}, {{$staff->first_name}}, {{$staff->middle_name}}</td>
-             <!-- Date created -->
-             <td class="py-2 px-4 border-b text-center">{{ $staff->created_at->format('F j, Y h:i A') }}</td>
-             <!-- role -->
-             <td class="py-2 px-4 border-b">
-               {{ $staff->usertype === 'user' ? 'Staff' : $staff->usertype }}
-              </td>
-             <!-- status -->
-             <td class="py-2 px-4 border-b">
-               @if ($staff->is_online)
-              <div class="bg-green-800 text-white py-2 px-4 rounded-full flex items-center justify-center">Online</div>
-            @else
-              <div class="bg-red-800 text-white py-2 px-4 rounded-full flex items-center justify-center">Offline</div>
-              @endif
-            </td>
-             <!-- Action -->
-          <td class="py-2 px-4 border-b">
-        <div class=" flex justify-center items-center space-x-2">
-          <button type="button" onclick="openModal('{{ $staff->id }}', '{{ $staff->first_name }}', '{{ $staff->is_active }}' )" class="px-4 py-2 rounded text-white {{ $staff->is_active ? 'bg-red-500' : 'bg-green-500' }}">
-            {{ $staff->is_active ? 'Disable' : 'Enable' }}
-            </button>
-            <button type="button"  onclick="openEditModal('{{$staff->id}}' , '{{$staff->first_name}}', '{{$staff->middle_name}}','{{$staff->last_name}}' , '{{$staff->phone_number}}', '{{$staff->address}}', '{{$staff->birthdate}}' )" 
-            class="text-white bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded ">Edit</button>
-            <button type="button" onclick="showDeleteModal(this)" data-url="{{ route('staffManagement.destroy', $staff->id) }}" class="text-white bg-red-700 hover:bg-red-800 px-4 py-2">Delete</button>
-
-        </div>
-          
-          </td>
-       
-        </tr>
-        @endforeach
-      </tbody>
-    </table>
-        </div>
-      </div>
+      <div class="bg-white shadow-md rounded my-6 overflow-x-auto">
+            <table class="min-w-max w-full table-auto">
+                <thead>
+              
+                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6 text-left">Name</th>
+                        <th class="py-3 px-6 text-left">Email</th>                  
+                        <th class="py-3 px-6 text-center">Role</th>
+                              <th class="py-3 px-6 text-center">Status</th>
+                        <th class="py-3 px-6 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 text-sm font-light">
+                   @foreach ($staffMembers as $staff)
+                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                        <td class="py-3 px-6 text-left whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="mr-2">
+                                    <img class="w-6 h-6 rounded-full" src="https://randomuser.me/api/portraits/men/91.jpg" alt=""/>
+                                </div>
+                                <span>{{$staff -> last_name}},{{$staff -> first_name}} {{$staff -> middle_name}}</span>
+                            </div>
+                            
+                        </td>
+                        <td class="py-3 px-6 text-left">
+                        {{$staff-> email}}
+                        </td>
+                       
+                        <td class="py-3 px-6 text-center">
+                        {{ $staff->usertype === 'user' ? 'Staff' : $staff->usertype }}
+                        </td> 
+                        <td class="py-3 px-6 text-center">
+                             @if ($staff->is_online)
+                           <div class="bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs">Online</div>
+                            @else
+                            <div class="bg-red-200 text-red-600 py-1 px-3 rounded-full text-xs">Offline</div>
+                             @endif
+                        </td>
+                        <td class="py-3 px-6 text-center">
+                            <div class="flex justify-center item-center">
+                                <button type="button" onclick="openModal('{{ $staff->id }}', '{{ $staff->first_name }}', '{{ $staff->is_active }}' )" class="bg-blue-500 text-white px-2 py-1 rounded mr-2 {{ $staff->is_active ? 'bg-red-500' : 'bg-green-500' }}">
+                                {{ $staff->is_active ? 'Disable' : 'Enable' }}</button>
+                                <button type="button"  onclick="openEditModal('{{$staff->id}}' , '{{$staff->first_name}}', '{{$staff->middle_name}}','{{$staff->last_name}}' , '{{$staff->phone_number}}', '{{$staff->address}}', '{{$staff->birthdate}}' )" class="bg-yellow-500 text-white px-2 py-1 rounded mr-2">Edit</button>
+                                <button type="button" onclick="showDeleteModal(this)" data-url="{{ route('staffManagement.destroy', $staff->id) }}" class="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                    
+                   
+                   
+                  
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+        </div>   
 
   </div>
    
