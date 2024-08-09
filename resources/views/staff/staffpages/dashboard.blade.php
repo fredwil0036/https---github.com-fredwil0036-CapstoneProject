@@ -10,51 +10,14 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   @Vite('resources/css/app.css')
+  <link rel="stylesheet" href="{{ asset('css/staffsidenav.css') }}">
 </head>
-<style>
-          .nav-collapsed {
-            width: 64px; /* Width to show only icons */
-        }
-        .nav-expanded {
-            width: 250px; /* Width to show icons and text */
-        }
-        .main-collapsed {
-            margin-left: 64px; /* Adjust according to collapsed nav bar width */
-        }
-        .main-expanded {
-            margin-left: 250px; /* Adjust according to expanded nav bar width */
-        }
-        .text-hidden {
-            display: none;
-        }
-        .text-visible {
-            display: inline-block;
-        }
-        #nav-bar, #main-content, .ml-2 {
-            transition: all 0.3s ease;
-        }
-        .profile-section {
-        text-align: center;
-        }
-        .profile-picture {
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            margin: 0 auto;
-        }
-        .profile-info {
-            text-align: center;
-            margin-top: 8px;
-        }
-      
-    </style>
-<body class="flex font-poppins bg-bgblue ">
+<body class="flex font-poppins bg-gray-500 ">
 
 @include('staff.staffmodal.leftnavigation')
 
 
-<main id="main-content" class="flex-grow p-4 main-collapsed">
+<main id="main-content" class="flex-grow p-4 main-expanded">
   <div class="content">
     <div class="header d-flex align-items-center mb-4">
       <!-- Left section with MDRRMO logo, text, App logo, and app name text -->
@@ -79,30 +42,24 @@
 <script>
 
 const toggleButton = document.getElementById('toggle-nav');
-    const navBar = document.getElementById('nav-bar');
-    const mainContent = document.getElementById('main-content');
+        const navBar = document.getElementById('nav-bar');
+        const mainContent = document.getElementById('main-content');
 
-    toggleButton.addEventListener('click', () => {
-        navBar.classList.toggle('nav-collapsed');
-        navBar.classList.toggle('nav-expanded');
-        mainContent.classList.toggle('main-collapsed');
-        mainContent.classList.toggle('main-expanded');
-        const textLabels = document.querySelectorAll('#nav-bar .ml-2');
-        textLabels.forEach(label => label.classList.toggle('text-hidden'));
-        textLabels.forEach(label => label.classList.toggle('text-visible'));
-        const profileInfo = document.querySelector('.profile-info');
-        const profilepic=document.querySelector('.profile-picture')
-        profileInfo.classList.toggle('text-hidden');
-        profileInfo.classList.toggle('text-visible');
-        profilepic.classList.toggle('hidden');
-        profilepic.classList.toggle('vissible');
-
-    });
-
-    // Ensure nav bar is collapsed initially
-    document.addEventListener('DOMContentLoaded', () => {
-        navBar.classList.add('nav-collapsed');
-    });
+        toggleButton.addEventListener('click', () => {
+            navBar.classList.toggle('nav-collapsed');
+            navBar.classList.toggle('nav-expanded');
+            mainContent.classList.toggle('main-collapsed');
+            mainContent.classList.toggle('main-expanded');
+            const textLabels = document.querySelectorAll('#nav-bar .ml-2');
+            textLabels.forEach(label => label.classList.toggle('text-hidden'));
+            textLabels.forEach(label => label.classList.toggle('text-visible'));
+            const profileInfo = document.querySelector('.profile-info');
+            const profilepic = document.querySelector('.profile-picture');
+            profileInfo.classList.toggle('text-hidden');
+            profileInfo.classList.toggle('text-visible');
+            profilepic.classList.toggle('hidden');
+            profilepic.classList.toggle('vissible');
+        });
 
 
   // Your web app's Firebase configuration
@@ -142,7 +99,8 @@ const toggleButton = document.getElementById('toggle-nav');
                   data: [],
                   borderColor: 'rgba(75, 192, 192, 1)',
                   backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                  borderWidth: 4
+                  borderWidth: 4,
+                  fill: true
               }]
           },
           options: {
@@ -182,7 +140,21 @@ const toggleButton = document.getElementById('toggle-nav');
   }
 
      // Clear form fields and close modal on successful submission
-    
+
+     document.getElementById('reports-button').addEventListener('click', () => {
+        const submenu = document.getElementById('reports-submenu');
+        if (submenu.classList.contains('hidden')) {
+            submenu.classList.remove('hidden');
+            submenu.style.maxHeight = submenu.scrollHeight + 'px';
+        } else {
+            submenu.style.maxHeight = '0';
+            submenu.addEventListener('transitionend', () => {
+                if (submenu.style.maxHeight === '0px') {
+                    submenu.classList.add('hidden');
+                }
+            }, { once: true });
+        }
+    });
 </script>
 </body>
 </html>

@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Reports extends Model
+class AllDisaterReport extends Model
 {
     use HasFactory;
-    
-    protected $table = 'disaster_reports';
+    protected $table = 'all_disaster_reports';
     protected $fillable = [
         'staff_email',
         'typhoon_name',

@@ -29,6 +29,9 @@ export default {
               fontFamily: {
                 poppins: ['Poppins', 'sans-serif'],
               },
+              width: {
+                '98': '98%', // Custom width of 96%
+              },
         },
     },
 

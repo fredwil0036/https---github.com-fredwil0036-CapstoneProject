@@ -3,7 +3,8 @@
 <head>
   <!-- Design by foolishdeveloper.com -->
   <title>Login</title>
-  
+  <link rel="icon" href="{{ asset('/images/solace.svg') }}" type="image/svg">
+
   <link rel="stylesheet" href="{{ asset('css/logindesign.css') }}">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

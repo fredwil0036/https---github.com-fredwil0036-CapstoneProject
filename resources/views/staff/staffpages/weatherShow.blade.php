@@ -5,36 +5,14 @@
     @Vite('resources/css/app.css')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <style>
-          .nav-collapsed {
-            width: 64px; /* Width to show only icons */
-        }
-        .nav-expanded {
-            width: 250px; /* Width to show icons and text */
-        }
-        .main-collapsed {
-            margin-left: 64px; /* Adjust according to collapsed nav bar width */
-        }
-        .main-expanded {
-            margin-left: 250px; /* Adjust according to expanded nav bar width */
-        }
-        .text-hidden {
-            display: none;
-        }
-        .text-visible {
-            display: inline-block;
-        }
-        #nav-bar, #main-content, .ml-2 {
-            transition: all 0.3s ease;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/staffsidenav.css') }}">
 </head>
-<body class="bg-bgblue flex font-poppins">
+<body class="bg-gray-500 flex font-poppins">
     <!-- Fixed Navbar -->
     @include('Staff.staffmodal.leftnavigation')
 
     <!-- Main Content -->
-    <main id="main-content" class="flex-grow p-4 main-collapsed">
+    <main id="main-content" class="flex-grow p-4 main-expanded">
         <div class="w-full max-w-screen-full bg-white p-10 rounded-xl ring-8 ring-white ring-opacity-40">
             <div class="flex justify-between">
                 <div class="flex flex-col">
@@ -89,7 +67,7 @@
      
     </main>
     <script>
-               const toggleButton = document.getElementById('toggle-nav');
+   const toggleButton = document.getElementById('toggle-nav');
         const navBar = document.getElementById('nav-bar');
         const mainContent = document.getElementById('main-content');
 
@@ -101,12 +79,29 @@
             const textLabels = document.querySelectorAll('#nav-bar .ml-2');
             textLabels.forEach(label => label.classList.toggle('text-hidden'));
             textLabels.forEach(label => label.classList.toggle('text-visible'));
+            const profileInfo = document.querySelector('.profile-info');
+            const profilepic = document.querySelector('.profile-picture');
+            profileInfo.classList.toggle('text-hidden');
+            profileInfo.classList.toggle('text-visible');
+            profilepic.classList.toggle('hidden');
+            profilepic.classList.toggle('vissible');
         });
 
-        // Ensure nav bar is collapsed initially
-        document.addEventListener('DOMContentLoaded', () => {
-            navBar.classList.add('nav-collapsed');
-        });
+
+        document.getElementById('reports-button').addEventListener('click', () => {
+        const submenu = document.getElementById('reports-submenu');
+        if (submenu.classList.contains('hidden')) {
+            submenu.classList.remove('hidden');
+            submenu.style.maxHeight = submenu.scrollHeight + 'px';
+        } else {
+            submenu.style.maxHeight = '0';
+            submenu.addEventListener('transitionend', () => {
+                if (submenu.style.maxHeight === '0px') {
+                    submenu.classList.add('hidden');
+                }
+            }, { once: true });
+        }
+    });
     </script>
 </body>
 </html>

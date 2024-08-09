@@ -23,23 +23,38 @@ function previewImage(event) {
  
     //left navigation script 
     const toggleButton = document.getElementById('toggle-nav');
-    const navBar = document.getElementById('nav-bar');
-    const mainContent = document.getElementById('main-content');
+        const navBar = document.getElementById('nav-bar');
+        const mainContent = document.getElementById('main-content');
 
-    toggleButton.addEventListener('click', () => {
-        navBar.classList.toggle('nav-collapsed');
-        navBar.classList.toggle('nav-expanded');
-        mainContent.classList.toggle('main-collapsed');
-        mainContent.classList.toggle('main-expanded');
-        const textLabels = document.querySelectorAll('#nav-bar .ml-2');
-        textLabels.forEach(label => label.classList.toggle('text-hidden'));
-        textLabels.forEach(label => label.classList.toggle('text-visible'));
-    });
-
-    // Ensure nav bar is collapsed initially
-    document.addEventListener('DOMContentLoaded', () => {
-        navBar.classList.add('nav-collapsed');
-    });
+        toggleButton.addEventListener('click', () => {
+            navBar.classList.toggle('nav-collapsed');
+            navBar.classList.toggle('nav-expanded');
+            mainContent.classList.toggle('main-collapsed');
+            mainContent.classList.toggle('main-expanded');
+            const textLabels = document.querySelectorAll('#nav-bar .ml-2');
+            textLabels.forEach(label => label.classList.toggle('text-hidden'));
+            textLabels.forEach(label => label.classList.toggle('text-visible'));
+            const profileInfo = document.querySelector('.profile-info');
+            const profilepic = document.querySelector('.profile-picture');
+            profileInfo.classList.toggle('text-hidden');
+            profileInfo.classList.toggle('text-visible');
+            profilepic.classList.toggle('hidden');
+            profilepic.classList.toggle('vissible');
+        });
+        document.getElementById('reports-button').addEventListener('click', () => {
+            const submenu = document.getElementById('reports-submenu');
+            if (submenu.classList.contains('hidden')) {
+                submenu.classList.remove('hidden');
+                submenu.style.maxHeight = submenu.scrollHeight + 'px';
+            } else {
+                submenu.style.maxHeight = '0';
+                submenu.addEventListener('transitionend', () => {
+                    if (submenu.style.maxHeight === '0px') {
+                        submenu.classList.add('hidden');
+                    }
+                }, { once: true });
+            }
+        });
 
 
 

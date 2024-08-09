@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="icon" href="{{ asset('/images/solace.svg') }}" type="image/svg">
+
     @Vite('resources/css/app.css')
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
 </head>
@@ -12,7 +14,7 @@
     @include('admin.adminmodal.leftnavigation')
     
 
-    <div id="main-content" class="flex-1 p-4  main-collapsed">
+    <div id="main-content" class="flex-1 p-4  main-expanded">
     <div class=" mt-5">
 
     <div class="header d-flex align-items-center mb-4">
@@ -73,7 +75,7 @@
     </select>
     </div>
         <div class="flex justify-center">
-        <table class="w-9/12 bg-white m-3 justify-center rounded-2xl">
+        <table class="w-98 bg-white m-3 justify-center rounded-2xl">
         <thead class="bg-blue-500 text-white font-bold">
             <tr>
                 <th class="w-1/12 px-4 py-2">ID</th>
@@ -107,7 +109,7 @@
     </div>
 
     <script>
-        const toggleButton = document.getElementById('toggle-nav');
+       const toggleButton = document.getElementById('toggle-nav');
         const navBar = document.getElementById('nav-bar');
         const mainContent = document.getElementById('main-content');
 
@@ -119,13 +121,14 @@
             const textLabels = document.querySelectorAll('#nav-bar .ml-2');
             textLabels.forEach(label => label.classList.toggle('text-hidden'));
             textLabels.forEach(label => label.classList.toggle('text-visible'));
+            const profileInfo = document.querySelector('.profile-info');
+            const profilepic = document.querySelector('.profile-picture');
+            profileInfo.classList.toggle('text-hidden');
+            profileInfo.classList.toggle('text-visible');
+            profilepic.classList.toggle('hidden');
+            profilepic.classList.toggle('vissible');
         });
 
-        // Ensure nav bar is collapsed initially
-        document.addEventListener('DOMContentLoaded', () => {
-            navBar.classList.add('nav-collapsed');
-        });
-     
         document.getElementById('barangay-filter').addEventListener('change', function() {
         let selectedBarangay = this.value;
         let url = new URL(window.location.href);

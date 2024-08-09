@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Staff Management</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <link rel="icon" href="{{ asset('/images/solace.svg') }}" type="image/svg">
+
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   @Vite('resources/css/app.css')
   <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
@@ -18,7 +20,7 @@
     @include('admin.adminmodal.updateModal')
     @include('admin.adminmodal.deleteconfirmation')
 
-    <main id="main-content" class="flex-grow p-4 main-collapsed">
+    <main id="main-content" class="flex-grow p-4 main-expanded">
 
 @if (session('success'))
     <div class="bg-green-200 border-green-500 border-l-4 p-4 mb-4">
@@ -103,6 +105,7 @@
                     <!-- Add more rows as needed -->
                 </tbody>
             </table>
+           
         </div>   
 
   </div>

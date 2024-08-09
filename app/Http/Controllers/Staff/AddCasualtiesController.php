@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class AddCasualtiesController extends Controller
 {
     public function index(){
-        return view("staff.staffpages.addcasualties");
+        return view("staff.staffpages.Reports.addcasualties");
     }
     public function store(Request $request)
     {
@@ -24,8 +24,8 @@ class AddCasualtiesController extends Controller
             'disaster_date' => 'nullable|date',
             'disaster_enddate' => 'nullable|date',
             //water level
-            'lowest_water_level' => 'required|numeric|min:0|max:10|regex:/^\d+(\.\d{1,2})?$/',
-            'highest_water_level' => 'required|numeric|min:0|max:10|regex:/^\d+(\.\d{1,2})?$/',
+            'lowest_water_level' => 'required',
+            'highest_water_level' => 'required',
             //casualties
             'dead' => 'required|integer',
             'injured' => 'required|integer',
@@ -33,6 +33,15 @@ class AddCasualtiesController extends Controller
             //Number of Displaced Population 
             'displaced_persons'=> 'required|integer',
             'displaced_families'=> 'required|integer',
+            //number of damaged houses 
+            'totally_damaged'=> 'required|integer',
+            'damages_house_partially'=> 'required|integer',
+            //Damage to properties
+            'infrasture_damaged' => 'required|numeric',
+            'ariculture_damage' => 'required|numeric',
+            'industrial_damage' => 'required|numeric',
+            'privatecomercial_damage'=> 'required|numeric',
+            
         ]);
 
        
@@ -40,19 +49,28 @@ class AddCasualtiesController extends Controller
         
         // Create the new staff member
          Reports::create([
-            'first_name' => $request->input('first_name'),
-            'middle_name' => $request->input('middle_name'),
-            'last_name' => $request->input('last_name'),
-            'birthdate' => $request->input('birthdate'),
-            'phone_number' => $request->input('phone_number'),
-            'address' => $request->input('address'),
-            'email' => $request->input('email'),
-            'user_type' => 'staff',
-            'is_active'=> 1,
-            'is_online'=>0,
+            'staff_email' => $request->input('staff_email'),
+            'typhoon_name' => $request->input('disaster_name'),
+            'affected_barangay' => $request->input('affected_barangay'),
+            'started_date' => $request->input('disaster_date'),
+            'end_date' => $request->input('disaster_enddate'),
+            'lowest_water_level' => $request->input('lowest_water_level'),
+            'highest_water_level' => $request->input('highest_water_level'),
+            'casualties_dead' => $request->input('dead'),
+            'casualties_injured' => $request->input('injured'),
+            'casualties_missing' => $request->input('missing'),
+            'dispPol_person' => $request->input('displaced_persons'),
+            'dispPol_families' => $request->input('displaced_families'),
+            'totally_damaged'=> $request->input('totally_damaged'),
+            'damages_house_partially'=> $request->input('damages_house_partially'),
+            'infrastracture_damaged'=> $request->input('infrasture_damaged'),
+            'agriculture_damaged'=> $request->input('ariculture_damage'),
+            'industrial_damaged'=> $request->input('industrial_damage'),
+            'privateComercial_damaged'=> $request->input('privatecomercial_damage'),
+            
         ]);
 
         // Redirect back with success message
-        return redirect()->back()->with('success', 'Staff member added successfully.');
+        return redirect()->back()->with('success', 'Report added successfully.');
     }
 }

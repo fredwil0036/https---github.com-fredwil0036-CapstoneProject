@@ -9,6 +9,8 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="icon" href="{{ asset('/images/solace.svg') }}" type="image/svg">
+
   @Vite('resources/css/app.css')
   <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
 </head>
@@ -20,7 +22,7 @@
 @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-    <main id="main-content" class="flex-grow p-4 main-collapsed">
+    <main id="main-content" class="flex-grow p-4 main-expanded">
   <div class="content">
     <div class="header d-flex align-items-center mb-4">
       <!-- Left section with MDRRMO logo, text, App logo, and app name text -->
@@ -72,7 +74,7 @@
 
   var db = firebase.firestore();
 
-  const toggleButton = document.getElementById('toggle-nav');
+        const toggleButton = document.getElementById('toggle-nav');
         const navBar = document.getElementById('nav-bar');
         const mainContent = document.getElementById('main-content');
 
@@ -84,12 +86,14 @@
             const textLabels = document.querySelectorAll('#nav-bar .ml-2');
             textLabels.forEach(label => label.classList.toggle('text-hidden'));
             textLabels.forEach(label => label.classList.toggle('text-visible'));
+            const profileInfo = document.querySelector('.profile-info');
+            const profilepic = document.querySelector('.profile-picture');
+            profileInfo.classList.toggle('text-hidden');
+            profileInfo.classList.toggle('text-visible');
+            profilepic.classList.toggle('hidden');
+            profilepic.classList.toggle('vissible');
         });
 
-        // Ensure nav bar is collapsed initially
-        document.addEventListener('DOMContentLoaded', () => {
-            navBar.classList.add('nav-collapsed');
-        });
 
   document.addEventListener('DOMContentLoaded', () => {
       renderChart();
@@ -112,7 +116,8 @@
                   data: [],
                   borderColor: 'rgba(75, 192, 192, 1)',
                   backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                  borderWidth: 4
+                  borderWidth: 4,
+                  fill: true
               }]
           },
           options: {

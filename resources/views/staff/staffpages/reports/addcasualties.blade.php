@@ -10,51 +10,15 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   @Vite('resources/css/app.css')
+  <link rel="stylesheet" href="{{ asset('css/staffsidenav.css') }}">
 </head>
-<style>
-          .nav-collapsed {
-            width: 64px; /* Width to show only icons */
-        }
-        .nav-expanded {
-            width: 250px; /* Width to show icons and text */
-        }
-        .main-collapsed {
-            margin-left: 64px; /* Adjust according to collapsed nav bar width */
-        }
-        .main-expanded {
-            margin-left: 250px; /* Adjust according to expanded nav bar width */
-        }
-        .text-hidden {
-            display: none;
-        }
-        .text-visible {
-            display: inline-block;
-        }
-        #nav-bar, #main-content, .ml-2 {
-            transition: all 0.3s ease;
-        }
-        .profile-section {
-        text-align: center;
-        }
-        .profile-picture {
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            margin: 0 auto;
-        }
-        .profile-info {
-            text-align: center;
-            margin-top: 8px;
-        }
-      
-    </style>
-<body class="flex font-poppins bg-bgblue ">
+
+<body class="flex font-poppins bg-gray-500 ">
 
 @include('staff.staffmodal.leftnavigation')
 
 
-<main id="main-content" class="flex-grow p-4 main-collapsed">
+<main id="main-content" class="flex-grow p-4 main-expanded">
   <div class="content">
     <div class="header d-flex align-items-center mb-4">
       <!-- Left section with MDRRMO logo, text, App logo, and app name text -->
@@ -68,9 +32,29 @@
 
     <div class="flex justify-center items-center  w-full ">
     <div class=" max-w-full mx-auto bg-white p-8 rounded-lg shadow-lg">
-    <input type="text" id="fname" name="staff_email" value="{{Auth::user()->email}}" hidden>
+    @if (session('success'))
+    <div class="bg-green-200 border-green-500 border-l-4 p-4 mb-4">
+        <p class="text-green-700">{{ session('success') }}</p>
+    </div>
+        @endif
+        @if (session('successdelete'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+        @endif
+        @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
         <h1 class="text-2xl font-bold mb-6">Disaster Report Form</h1>
-        <form action="/submit-disaster-report" method="POST">
+        <form action="{{route('report.store')}}" method="post">
+            @csrf
+            <input type="text" id="fname" name="staff_email" value="{{Auth::user()->email}}" hidden>
             <div class="flex j items-center w-full">
                 
             <div class="mb-4 mr-10 ">
@@ -140,11 +124,11 @@
                 <div class="flex flex-wrap -mx-3 mb-2">
                     <div class="w-1/2 px-3 mb-4 md:mb-0">
                         <label for="total-damaged" class="block text-gray-700 font-bold mb-2">Totally:</label>
-                        <input type="number" id="total-damaged" name="total_damaged" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        <input type="number" id="total-damaged" name="totally_damaged" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                     </div>
                     <div class="w-1/2 px-3 mb-4 md:mb-0">
                         <label for="partially-damageds" class="block text-gray-700 font-bold mb-2">Partially:</label>
-                        <input type="number" id="partially-damageds" name="displaced_families" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        <input type="number" id="partially-damageds" name="damages_house_partially" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                     </div>
                 </div>
             </div>
@@ -156,7 +140,7 @@
                 <div class="flex -mx-3 mb-2">
                     <div class="w-1/2 px-3 mb-4 md:mb-0">
                         <label for="infrasture-damaged" class="block text-gray-700 font-bold mb-2">Infrastracture:</label>
-                        <input type="number" id="infrasture-damaged" name="infrasture-damaged" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        <input type="number" id="infrasture-damaged" name="infrasture_damaged" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                     </div>
                     <div class="w-1/2 px-3 mb-4 md:mb-0">
                         <label for="ariculture-damageds" class="block text-gray-700 font-bold mb-2">Agriculture:</label>
@@ -210,10 +194,7 @@ const toggleButton = document.getElementById('toggle-nav');
 
     });
 
-    // Ensure nav bar is collapsed initially
-    document.addEventListener('DOMContentLoaded', () => {
-        navBar.classList.add('nav-collapsed');
-    });
+ 
 
   function showContent(buttonId) {
       const contentSections = document.querySelectorAll('.content-section');
@@ -231,9 +212,30 @@ const toggleButton = document.getElementById('toggle-nav');
     }
 }
 document.getElementById('lowest_water_level').addEventListener('input',validateDecimalInput);
-document.getElementById('hishrst_water_level').addEventListener('input',validateDecimalInput);
+document.getElementById('highest_water_level').addEventListener('input',validateDecimalInput);
 
+function validateNoDecimalInput(event) {
+    let value = event.target.value;
+    // Remove any non-digit characters including decimal points
+    event.target.value = value.replace(/[^0-9]/g, '');
+}
+document.getElementById('displaced-persons').addEventListener('input',validateNoDecimalInput);
+document.getElementById('displaced-families').addEventListener('input',validateNoDecimalInput);
 
+document.getElementById('reports-button').addEventListener('click', () => {
+        const submenu = document.getElementById('reports-submenu');
+        if (submenu.classList.contains('hidden')) {
+            submenu.classList.remove('hidden');
+            submenu.style.maxHeight = submenu.scrollHeight + 'px';
+        } else {
+            submenu.style.maxHeight = '0';
+            submenu.addEventListener('transitionend', () => {
+                if (submenu.style.maxHeight === '0px') {
+                    submenu.classList.add('hidden');
+                }
+            }, { once: true });
+        }
+    });
  
 
     

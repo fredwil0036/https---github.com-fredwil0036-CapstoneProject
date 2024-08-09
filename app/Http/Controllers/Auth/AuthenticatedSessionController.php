@@ -25,9 +25,16 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+
         $request->authenticate();
 
         $request->session()->regenerate();
+        $user = Auth::guard('web')->user();
+
+    // Set the user online
+    if ($user) {
+        $this->setUserOnline($user);
+    }
 
         // Determine the dashboard route based on usertype
         $dashboardRoute = $this->redirectToDashboard();
@@ -51,6 +58,7 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+
     protected function setUserOnline(User $useronline): void
     {
         $useronline->is_online = true;
